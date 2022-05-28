@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "268189020961",
+    "project_id": "loginsafe-ae49a",
+    "storage_bucket": "loginsafe-ae49a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:268189020961:android:8301c6956d75b54fc1c460",
+        "android_client_info": {
+          "package_name": "com.example.loginsafe"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "268189020961-nehhdrh10sjle7bu7us0d35k4k5im0qo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCyahptb6tn6zscoFpvnYXs3xn0YwWIhQU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "268189020961-nehhdrh10sjle7bu7us0d35k4k5im0qo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
