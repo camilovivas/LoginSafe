@@ -23,4 +23,8 @@ public class Login extends AppCompatActivity {
         password = findViewById(R.id.passTx);
         login = findViewById(R.id.loginBtn);
     }
+
+    public void login(){
+
+    }
 }
