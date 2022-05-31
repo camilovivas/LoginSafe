@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
-    private Button admin, usuario;
+    private Button admin, usuario, registro;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -16,8 +16,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         admin = findViewById(R.id.adminBtn);
         usuario = findViewById(R.id.userBtn);
+        registro = findViewById(R.id.registerBtn);
         admin.setOnClickListener(this);
         usuario.setOnClickListener(this);
+        registro.setOnClickListener(this);
     }
 
     public void onClick(View v){
@@ -34,6 +36,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 intent2.putExtra("type", type2);
                 startActivity(intent2);
                 break;
+            case R.id.registerBtn:
+                Intent intent3 = new Intent(this,Registro.class);
+                startActivity(intent3);
         }
     }
 }

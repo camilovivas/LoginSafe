@@ -8,6 +8,11 @@ public class Admin {
 
     }
 
+    public Admin(String user, String password) {
+        this.user = user;
+        this.password = password;
+    }
+
     public String getUser() {
         return user;
     }

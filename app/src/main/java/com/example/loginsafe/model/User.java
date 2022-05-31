@@ -13,6 +13,12 @@ public class User {
 
     }
 
+    public User(String userName, String password, Calendar lastCheckInTime) {
+        this.userName = userName;
+        this.password = password;
+        this.lastCheckInTime = lastCheckInTime;
+    }
+
     public String getUserName() {
         return userName;
     }
