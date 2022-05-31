@@ -7,13 +7,13 @@ public class User {
 //usuario unico, contraseña, ultima hora de ingreso
     private String userName;
     private String password;
-    private Calendar lastCheckInTime;
+    private Long lastCheckInTime;
 
     public User(){
 
     }
 
-    public User(String userName, String password, Calendar lastCheckInTime) {
+    public User(String userName, String password, Long lastCheckInTime) {
         this.userName = userName;
         this.password = password;
         this.lastCheckInTime = lastCheckInTime;
@@ -35,11 +35,11 @@ public class User {
         this.password = password;
     }
 
-    public Calendar getLastCheckInTime() {
+    public Long getLastCheckInTime() {
         return lastCheckInTime;
     }
 
-    public void setLastCheckInTime(Calendar lastCheckInTime) {
+    public void setLastCheckInTime(Long lastCheckInTime) {
         this.lastCheckInTime = lastCheckInTime;
     }
 }
