@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.example.loginsafe.model.User;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 public class Registro extends AppCompatActivity {
 
@@ -29,15 +30,35 @@ public class Registro extends AppCompatActivity {
             String name = username.getText().toString();
             String pass = password.getText().toString();
             String repass = repassword.getText().toString();
-            if(pass.equals(repass)){
-                //TODO poner el hash
-                User user = new User(name, pass, 0L);
-                FirebaseFirestore.getInstance().collection("users").document(name).set(user);
+            User user = new User(name, pass, 0L);//TODO esa pass se teine que cambiar por la hash
+            if(pass.equals(repass)){//si no son iguales las contraseñas
+                Query query = FirebaseFirestore.getInstance().collection("users");
+                if(query.get().getResult().isEmpty()){// si la collectios esta vacia
+                    FirebaseFirestore.getInstance().collection("users").document(name).set(user);
+                }
+                else{
+                    Query query1 = FirebaseFirestore.getInstance().collection("users").whereEqualTo("userName", name);
+                    query1.get().addOnCompleteListener(
+                            task ->{
+                                if(task.getResult().size() == 0){//si el usuario no existe
+                                    FirebaseFirestore.getInstance().collection("users").document(name).set(user);
+                                }
+                                else{
+                                    Toast.makeText(this,"ese usuario ya existe", Toast.LENGTH_LONG).show();
+                                }
+                            }
+                    );
+                }
             }
             else{
                 Toast.makeText(this,"las contrasñeas no son iguales",Toast.LENGTH_LONG).show();
             }
         });
 
+    }
+
+    public String generatePassword(String pass){
+        //TODO
+        return null;
     }
 }
