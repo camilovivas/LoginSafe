@@ -7,7 +7,7 @@
 
     <Button
         android:id="@+id/cleanBtnRow"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:text="Limpiar contraseña"
@@ -17,9 +17,8 @@
 
     <Button
         android:id="@+id/deleteBtnRow"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="70dp"
         android:layout_marginTop="50dp"
         android:text="Eliminar"
         app:layout_constraintStart_toStartOf="parent"

@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.loginsafe.model.User;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
@@ -35,13 +36,18 @@ public class UserAdapter extends RecyclerView.Adapter<UserView> {
         User user = users.get(position);
         holder.getName().setText(user.getUserName());
         holder.getClean().setOnClickListener(e->{
-
+            FirebaseFirestore.getInstance().collection("users").document(user.getUserName()).update("password", "");
         });
 
         holder.getDelete().setOnClickListener(e->{
-
+            FirebaseFirestore.getInstance().collection("users").document(user.getUserName()).delete();
         });
 
+    }
+
+    public void addUser(User user){
+        users.add(user);
+        notifyItemInserted(users.size());
     }
 
     @Override
