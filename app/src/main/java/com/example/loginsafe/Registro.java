@@ -39,6 +39,8 @@ public class Registro extends AppCompatActivity {
     private static final int saltIndex = 1;
     private static final int pbkdf2Index = 2;
 
+    public static final String pbkdf2Algorithm = "PBKDF2WithHmacSHA1";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,11 +92,6 @@ public class Registro extends AppCompatActivity {
 
     }
 
-
-    public String generatePassword(String pass){
-        return createHash(pass.toCharArray());
-
-
     public void registrarUsuario(User user) {
         FirebaseFirestore.getInstance().collection("users").document(user.getUserName()).set(user);
         Toast.makeText(this, "usuario registrado", Toast.LENGTH_LONG).show();
@@ -103,7 +100,18 @@ public class Registro extends AppCompatActivity {
 
     }
 
-    private String createHash(char[] password) {
+
+    public String generatePassword(String pass)
+            throws NoSuchAlgorithmException, InvalidKeySpecException
+    {
+        return createHash(pass.toCharArray());
+    }
+
+
+
+    private String createHash(char[] password)
+            throws NoSuchAlgorithmException, InvalidKeySpecException
+    {
         // Generating random salt
         SecureRandom random = new SecureRandom();
         byte[] salt = new byte[saltBytes];
@@ -115,11 +123,70 @@ public class Registro extends AppCompatActivity {
         return pbkdf2Iterations + ":" + toHex(salt) + ":" +  toHex(hash);
     }
 
-    private  byte[] pbkdf2(char[] password, byte[] salt, int iterations, int bytes)
-
-        PBEKeySpec spec = new PBEKeySpec(password, salt, iterations, bytes * 8);
-        SecretKeyFactory skf = SecretKeyFactory.getInstance(PBKDF2_ALGORITHM);
-        return skf.generateSecret(spec).getEncoded();
+    public  boolean validatePassword(String password, String theHash)
+            throws NoSuchAlgorithmException, InvalidKeySpecException
+    {
+        return validatePassword(password.toCharArray(), theHash);
     }
+
+    public  boolean validatePassword(char[] password, String theHash)
+            throws NoSuchAlgorithmException, InvalidKeySpecException
+    {
+        // separating the hash into its parameters
+        String[] parameters = theHash.split(":");
+        int iterations = Integer.parseInt(parameters[iterationIndex]);
+        byte[] salt = fromHex(parameters[saltIndex]);
+        byte[] hash = fromHex(parameters[pbkdf2Index]);
+        // comparing hash of password provided, using the same salt,
+        // iterations and hash length
+        byte[] testHash = pbkdf2(password, salt, iterations, hash.length);
+        // The password is correct if both hashes match.
+        return slowEquals(hash, testHash);
+    }
+
+    private boolean slowEquals(byte[] a, byte[] b)
+    {
+        int comparison = a.length ^ b.length;
+        for(int i = 0; i < a.length && i < b.length; i++)
+            comparison |= a[i] ^ b[i];
+        return comparison == 0;
+    }
+
+    private  byte[] pbkdf2(char[] password, byte[] salt, int iterations, int bytes)
+            throws NoSuchAlgorithmException, InvalidKeySpecException
+    {
+        PBEKeySpec spec = new PBEKeySpec(password, salt, iterations, bytes * 8);
+        SecretKeyFactory theSKF = SecretKeyFactory.getInstance(pbkdf2Algorithm);
+        return theSKF.generateSecret(spec).getEncoded();
+    }
+
+    private byte[] fromHex(String hex)
+    {
+        byte[] binary = new byte[hex.length() / 2];
+        for(int i = 0; i < binary.length; i++)
+        {
+            binary[i] = (byte)Integer.parseInt(hex.substring(2*i, 2*i+2), 16);
+        }
+        return binary;
+    }
+
+
+    private String toHex(byte[] array)
+    {
+        BigInteger bigI = new BigInteger(1, array);
+        String hex = bigI.toString(16);
+        int paddingLength = (array.length * 2) - hex.length();
+        if(paddingLength > 0)
+            return String.format("%0" + paddingLength + "d", 0) + hex;
+        else
+            return hex;
+    }
+
+
+
+
+
+
+
 
 }
