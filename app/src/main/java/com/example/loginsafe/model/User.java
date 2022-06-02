@@ -1,9 +1,10 @@
 package com.example.loginsafe.model;
 
+import java.io.Serializable;
 import java.util.Calendar;
 
 
-public class User {
+public class User implements Serializable {
 //usuario unico, contraseña, ultima hora de ingreso
     private String userName;
     private String password;
